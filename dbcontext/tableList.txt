@@ -1,0 +1,316 @@
+            'usersinfo':'''(
+                IDS BIGINT PRIMARY KEY,
+                ACCOUNT TEXT,
+                PASSWORD TEXT,
+                EMAIL TEXT,
+                SUBS BOOLEAN
+                );''',
+#=====================================================
+            'mrtroutes':'''(
+                IDS BIGINT PRIMARY KEY,
+                COUNTY TEXT,
+                LINEID TEXT,
+                ROUTEID TEXT,
+                ROUTENAMEZH TEXT,
+                ROUTENAMEENG TEXT
+                );''',
+            'mrtstop':'''(
+                IDS BIGINT PRIMARY KEY,
+                COUNTY TEXT,
+                LINEID TEXT,
+                ROUTEID TEXT,
+                STATIONID TEXT,
+                STATIONNAME TEXT,
+                LONGITUDE DOUBLE PRECISION,
+                LATITUDE DOUBLE PRECISION,
+                UPDATEDATE TEXT,
+                CHECKDATE TEXT
+                );''',
+            'mrtstopexit':'''(
+                IDS BIGINT PRIMARY KEY,
+                COUNTY TEXT,
+                STATIONID TEXT,
+                EXITID TEXT,
+                EXITNAMEZH TEXT,
+                EXITNAMEENG TEXT,
+                LONGITUDE DOUBLE PRECISION,
+                LATITUDE DOUBLE PRECISION,
+                DESCRIPTION TEXT,
+                ESCALATOR TEXT,
+                ELEVATOR BOOLEAN
+                );''',
+            'mrtroutesshape':'''(
+                IDS BIGINT PRIMARY KEY,
+                COUNTY TEXT,
+                LINEID TEXT,
+                LINENAME TEXT,
+                GEOMETRY TEXT,
+                UPDATEDATE TEXT,
+                CHECKDATE TEXT
+                );''',
+#=====================================================
+			'bikestopdetails':'''(
+                IDS BIGINT PRIMARY KEY,
+                STATIONUID TEXT,
+                COUNTY TEXT,
+                STATIONNAMEZH TEXT,
+                STATIONNAMEENG TEXT,
+                LONGITUDE DOUBLE PRECISION,
+                LATITUDE DOUBLE PRECISION
+                );''',
+            'bikeconditions':'''(
+                IDS BIGINT PRIMARY KEY,
+                STATIONUID TEXT,
+                COUNTY TEXT,
+                AVAILABLE INTEGER,
+                RENTS INTEGER,
+                RETURNS INTEGER,
+                UPDATETIME TEXT
+                );''',
+#=====================================================
+            'busline':'''(
+                IDS BIGINT PRIMARY KEY,
+                COUNTY TEXT,
+                ROUTEUID TEXT,
+                ROUTENAME TEXT,
+                GEOMETRY TEXT
+                );''',
+            'routes':'''(
+                IDS BIGINT PRIMARY KEY,
+                COUNTY TEXT,
+                ROUTEUID TEXT,
+                ROUTEID TEXT,
+                ROUTENAME TEXT
+                );''',
+            'routedetails':'''(
+                IDS BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                COUNTY TEXT,
+                ROUTENAME TEXT,
+                STOPUID TEXT,
+                STOPSEQUENCE TEXT,
+                DIRECTION INTEGER,
+                STOPNAME TEXT,
+                LONGITUDE DOUBLE PRECISION,
+                LATITUDE DOUBLE PRECISION
+                );''',
+            'taipeis':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'newtaipeis':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'taoyuans':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'taichungs':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'tainans':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'hsinchus':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'hsinchucounties':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'miaolicounties':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'changhuacounties':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'nantoucounties':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'keelungs':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'yunlincounties':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'chiayicounties':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'chiayis':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'pingtungcounties':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'yilancounties':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'kaohsiungs':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'hualiencounties':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'taitungcounties':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
+            'kinmencounties':'''(
+                ID BIGINT PRIMARY KEY,
+                ROUTEUID TEXT,
+                PLATENUMB TEXT,
+                DIRECTION INTEGER,
+                LATITUDE DOUBLE PRECISION,
+                LONGITUDE DOUBLE PRECISION,
+                AZIMUTH DOUBLE PRECISION,
+                BUSSTATUS INTEGER,
+                UPDATETIME TEXT
+                );''',
