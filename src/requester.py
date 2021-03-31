@@ -25,6 +25,7 @@ class Requester():
         response = requests.request("GET", 
                                     self.UB.getProjects, 
                                     headers={"CK":self.Key.key})
+        print("All Projects Meta downloaded!")
         return json.loads(response.text)
 
 
@@ -34,7 +35,7 @@ class Requester():
         '''
 
         output = {}
-        for i in list(MyStorage.storage["ProjectData"].keys()): #[0:1]
+        for i in list(MyStorage.storage["ProjectData"].keys()): #[0:10]
             data_per_proj = []
             keys = MyStorage.storage["ProjectData"][i]["keys"]
             # Choose only one Project Key to request.
@@ -45,6 +46,7 @@ class Requester():
                 data = json.loads(response.text)
                 data_per_proj.append({"data":data, "ProjectKey":keys[0]})
                 output[str(i)] = data_per_proj
+                print("Project[{}] devices data downloaded!".format(i))
             else:
                 for j in keys:
                     response = requests.request("GET",
@@ -53,6 +55,7 @@ class Requester():
                     data = json.loads(response.text)
                     data_per_proj.append({"data": data, "ProjectKey":j})
                 output[str(i)] = data_per_proj
+                print("Project[{}] devices data downloaded!".format(i))
         return output
 
         
