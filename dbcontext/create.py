@@ -18,11 +18,8 @@ if __name__ == '__main__':
         'sensordata':{
             'projectmeta':'''(
                 PROJECTID BIGINT PRIMARY KEY,
-                PROJECTNAME TEXT
-                );''',
-            'devicekey':'''(
-                PROJECTID BIGINT PRIMARY KEY,
-                KEYVALUE TEXT
+                PROJECTNAME TEXT,
+                PROJECTKEYS TEXT[]
                 );'''
         }
     }

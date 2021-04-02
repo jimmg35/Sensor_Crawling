@@ -11,21 +11,22 @@ from src.parser import Parser
 
 if __name__ == "__main__":
 
-    # initialize basic object
+    # initialize basic object.
     myKey = Key()
     myBundler = UrlBundler()
     myStorage = Storer()
 
-    # initialize my requester
+    # initialize my requester.
     myReq = Requester(myBundler, myKey)
 
-    # get projects metadata
+    # get projects metadata.
     projMeta = myReq.getAllProjectsMeta()
     projMeta_processed = Parser.parseProjectMeta(projMeta)
     myStorage.insert(projMeta_processed, "ProjectData")
 
-    #print(myStorage.storage["ProjectData"])
-
-    # get devices of every project
+    # get devices of every project.
     deviceMeta = myReq.getDevicesOfProject(myStorage)
-    Parser.parseDevicesMeta(deviceMeta)
+    deviceMeta_processed = Parser.parseDevicesMeta(deviceMeta)
+    myStorage.insert(deviceMeta_processed, "DeviceMeta")
+
+    # import data into database.

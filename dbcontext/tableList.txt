@@ -1,8 +1,5 @@
 'projectmeta':'''(
     PROJECTID BIGINT PRIMARY KEY,
     PROJECTNAME TEXT
-    );''',
-'devicekey':'''(
-    PROJECTID BIGINT PRIMARY KEY,
-    KEYVALUE TEXT
-    );''',
+    PROJECTKEYS TEXT[]
+    );'''

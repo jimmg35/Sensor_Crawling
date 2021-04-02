@@ -5,7 +5,7 @@
 import requests
 import json
 from typing import List, Dict
-from src.utils import UrlBundler, Key
+from .utils import UrlBundler, Key
 
 
 
