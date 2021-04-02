@@ -28,11 +28,17 @@ class Storer():
     """
     data_list = []
     storage = {}
+    def __init__(self, dbcontext):
+        self.dbcontext = dbcontext
+
     def insert(self, data, name: str):
         self.storage[name] = data
         self.data_list.append(name)
 
-    #def import2Database(self, item: str):
+    def import2Database(self, item: str):
+        if item == "ProjectData" and self.data_list.index(item) != 1:
+            self.dbcontext.ImportProjectMeta(self.storage[item])
+            
 
 
 
@@ -62,7 +68,7 @@ class Dbcontext():
 
     def ImportProjectMeta(self, projectMeta):
         for projID in list(projectMeta.keys()):
-            t = "'{"
+            keys_arr: str = "'{"
             for index, i in enumerate(projectMeta[projID]["keys"]):
                 if index == (len(projectMeta[projID]["keys"])-1):
                     t += '"' + i + '"' + "}'"
@@ -70,8 +76,8 @@ class Dbcontext():
                     t += '"' + i + '"' + ','
 
 
-            keys_arr: str = '\{ \}'
             query = '''INSERT INTO projectmeta (projectid, projectname, projectkeys) 
-                                VALUES({}, \'{}\', {});'''.format(int(projID), 
+                                VALUES({}, \'{}\', {});'''.format(str(projID), 
                                                                   projectMeta[projID]["name"],
-                                                                  t)
+                                                                  keys_arr)
+            self.cursor.execute(query)
