@@ -14,16 +14,22 @@ if __name__ == "__main__":
     # initialize basic object.
     myKey = Key()
     myBundler = UrlBundler()
-    myDBcontext = Dbcontext()
+    myReq = Requester(myBundler, myKey)
+
+    # initialize dbcontext
+    myDBcontext = Dbcontext({"user":"postgres",
+                             "password":"jim60308",
+                             "host":"localhost",
+                             "port":"5432"}, "sensordata")
     myStorage = Storer(myDBcontext)
 
-    # initialize my requester.
-    myReq = Requester(myBundler, myKey)
+
 
     # get projects metadata.
     projMeta = myReq.getAllProjectsMeta()
     projMeta_processed = Parser.parseProjectMeta(projMeta)
     myStorage.insert(projMeta_processed, "ProjectData")
+    myStorage.import2Database("ProjectData")
 
     # get devices of every project.
     # deviceMeta = myReq.getDevicesOfProject(myStorage)

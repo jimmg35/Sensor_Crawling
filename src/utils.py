@@ -61,7 +61,7 @@ class Dbcontext():
                                 port=self.PGSQL_user_data["port"])
         conn.autocommit = True
         conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-        print(f'Successfully connected to local PostgreSQL server| User: @{user}')
+        print(f'Successfully connected to local PostgreSQL server| User: @{self.PGSQL_user_data["user"]}')
         print(f'                        Currently connected to database: @{database}')
         cursor = conn.cursor()
         return cursor 
@@ -71,9 +71,9 @@ class Dbcontext():
             keys_arr: str = "'{"
             for index, i in enumerate(projectMeta[projID]["keys"]):
                 if index == (len(projectMeta[projID]["keys"])-1):
-                    t += '"' + i + '"' + "}'"
+                    keys_arr += '"' + i + '"' + "}'"
                 else:
-                    t += '"' + i + '"' + ','
+                    keys_arr += '"' + i + '"' + ','
 
 
             query = '''INSERT INTO projectmeta (projectid, projectname, projectkeys) 
@@ -81,3 +81,4 @@ class Dbcontext():
                                                                   projectMeta[projID]["name"],
                                                                   keys_arr)
             self.cursor.execute(query)
+        print("Project Metadata has been stored into database!")
