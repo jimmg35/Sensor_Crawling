@@ -1,8 +1,11 @@
+# import essential modules
 import requests
 import json
 from typing import List, Dict
 
-from src.utils import UrlBundler, Storer, Dbcontext, Key
+# import main functionality
+from src.dbcontext import Dbcontext, Storer
+from src.utils import UrlBundler, Key
 from src.requester import Requester
 from src.parser import Parser
 
@@ -18,9 +21,9 @@ if __name__ == "__main__":
 
     # initialize dbcontext
     myDBcontext = Dbcontext({"user":"postgres",
-                             "password":"jim60308",
-                             "host":"localhost",
-                             "port":"5432"}, "sensordata")
+                                "password":"jim60308",
+                                "host":"localhost",
+                                "port":"5432"}, "sensordata")
     myStorage = Storer(myDBcontext)
 
 
@@ -29,12 +32,13 @@ if __name__ == "__main__":
     projMeta = myReq.getAllProjectsMeta()
     projMeta_processed = Parser.parseProjectMeta(projMeta)
     myStorage.insert(projMeta_processed, "ProjectData")
-    #myStorage.import2Database("ProjectData")
 
     # get devices of every project.
     deviceMeta = myReq.getDevicesOfProject(myStorage)
     deviceMeta_processed = Parser.parseDevicesMeta(deviceMeta)
     myStorage.insert(deviceMeta_processed, "DeviceMeta")
 
-    print(myStorage.storage["DeviceMeta"][0])
-    # import data into database.
+
+    # Import data into database.
+    myStorage.import2Database("ProjectData")
+    myStorage.import2Database("DeviceMeta")

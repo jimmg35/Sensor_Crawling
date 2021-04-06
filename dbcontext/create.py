@@ -17,7 +17,8 @@ if __name__ == '__main__':
     DB_details = {
         'sensordata':{
             'devicemeta':'''(
-                DEVICEID BIGINT PRIMARY KEY,
+                ID BIGINT PRIMARY KEY,
+                DEVICEID TEXT,
                 PROJECTKEY TEXT,
                 PROJECTID TEXT,
                 NAME TEXT NULL,

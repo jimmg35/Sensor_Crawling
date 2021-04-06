@@ -82,19 +82,23 @@ class Dbcontext():
                 column_str += i + ")"
                 break
             column_str += i + ","
-
-
-        for i in deviceMeta[0:1]:
-            values = self.bulidDeviceMetaQuery(i)
-            query = "INSERT INTO projectmeta " + column_str + values
-            print(query)
+        for index, i in enumerate(deviceMeta):
+            values = self.bulidDeviceMetaQuery(i, index)
+            query = "INSERT INTO devicemeta " + column_str + values
+            self.cursor.execute(query)
+        print("Device Metadata has been stored into database!")
             
-    def bulidDeviceMetaQuery(self, device):
-        output = " VALUES(" + device["id"] + ","
+    def bulidDeviceMetaQuery(self, device, count):
+        output = " VALUES(" + str(count) + "," + device["id"] + ","
         for index, i in enumerate(list(device.keys())):
             if index == (len(list(device.keys())) - 1):
                 output += "'" + str(device[i]) + "')"
                 break
+            if i == "id":
+                continue
+            if str(device[i]) == "旗山區公所前'":
+                output += "'" + "旗山區公所前" + "',"
+                continue
             output += "'" + str(device[i]) + "',"
         return output
         
