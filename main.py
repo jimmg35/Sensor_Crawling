@@ -29,11 +29,12 @@ if __name__ == "__main__":
     projMeta = myReq.getAllProjectsMeta()
     projMeta_processed = Parser.parseProjectMeta(projMeta)
     myStorage.insert(projMeta_processed, "ProjectData")
-    myStorage.import2Database("ProjectData")
+    #myStorage.import2Database("ProjectData")
 
     # get devices of every project.
-    # deviceMeta = myReq.getDevicesOfProject(myStorage)
-    # deviceMeta_processed = Parser.parseDevicesMeta(deviceMeta)
-    # myStorage.insert(deviceMeta_processed, "DeviceMeta")
+    deviceMeta = myReq.getDevicesOfProject(myStorage)
+    deviceMeta_processed = Parser.parseDevicesMeta(deviceMeta)
+    myStorage.insert(deviceMeta_processed, "DeviceMeta")
 
+    print(myStorage.storage["DeviceMeta"][0])
     # import data into database.

@@ -39,22 +39,23 @@ class Parser():
         att_union_proj.remove('')
         
         # column set goes into database
-        total_column = device_att_union_proj + att_union_proj
-        total_column.remove("attributes")
-        ParserTool.addTag2DubField(total_column)
+        # total_column = device_att_union_proj + att_union_proj
+        # print(total_column)
+        # total_column.remove("attributes")
+        # ParserTool.addTag2DubField(total_column)
 
 
         # Extracting value of device (lots of exception)
         all_device_data = []
         for project in list(deviceMeta.keys()):
             for devices in deviceMeta[project]: # for different project key.
-                device_chunk = {}
                 for Adevice in devices["data"]:
+                    device_chunk = {}
                     device_chunk["ProjectKey"] = devices["ProjectKey"]
                     device_chunk["ProjectID"] = project
                     ParserTool.takeValueOfAtt(device_chunk, Adevice, device_att_union_proj)
-                    ParserTool.takeValueOfAttChunk(device_chunk, Adevice, att_union_proj)
-                all_device_data.append(device_chunk)
+                    ParserTool.takeValueOfAttChunk(device_chunk, Adevice, att_union_proj, device_att_union_proj)
+                    all_device_data.append(device_chunk)
         return all_device_data
 
         

@@ -51,13 +51,14 @@ class ParserTool():
                 device_chunk[i] = None
 
     @staticmethod
-    def takeValueOfAttChunk(device_chunk, Adevice, union_colum):
+    def takeValueOfAttChunk(device_chunk, Adevice, union_colum, check_column):
         for i in union_colum:
             value, status = ParserTool.checkFieldExistInAttribute(Adevice["attributes"], i)
             if status:
                 device_chunk[i] = value
             else:
-                device_chunk[i] = None
+                if i not in check_column:
+                    device_chunk[i] = None
 
     @staticmethod
     def checkFieldExistInAttribute(att_chunk, att):
