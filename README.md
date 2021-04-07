@@ -19,7 +19,7 @@ myReq = Requester(myBundler, myKey)
 
 # initialize dbcontext
 myDBcontext = Dbcontext({"user":"postgres",
-                            "password":"jim60308",
+                            "password":"12345678",
                             "host":"localhost",
                             "port":"5432"}, "sensordata")
 myStorage = Storer(myDBcontext)
