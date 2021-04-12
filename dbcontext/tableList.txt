@@ -51,6 +51,12 @@
     LOCATIONID_2 TEXT NULL,
     OWNER TEXT NULL,
     REGION TEXT NULL
+    );''',
+'sensormeta':'''(
+    ID BIGINT PRIMARY KEY,
+    DEVICEID TEXT,
+    PROJECTKEY TEXT,
+    SENSOR_ID TEXT[]
     );'''
 
 

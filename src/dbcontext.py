@@ -25,6 +25,8 @@ class Storer():
             self.dbcontext.ImportProjectMeta(self.storage[item])
         if item == "DeviceMeta" and self.importGate(item):
             self.dbcontext.ImportDeviceMeta(self.storage[item])
+        if item == "SensorMeta" and self.importGate(item):
+            self.dbcontext.ImportSensorMeta(self.storage[item])
     
     def importGate(self, item):
         if self.data_list.index(item) != -1:
@@ -87,7 +89,25 @@ class Dbcontext():
             query = "INSERT INTO devicemeta " + column_str + values
             self.cursor.execute(query)
         print("Device Metadata has been stored into database!")
-            
+
+    def ImportSensorMeta(self, SensorMeta):
+        ids = 1
+        
+        
+        for device in SensorMeta:
+            sensor_id = "'{"
+            for index, i in enumerate(device[2]):
+                if index == (len(device[2])-1):
+                    sensor_id += '"' + str(i) + '"' + "}'"
+                    break
+                sensor_id += '"' + str(i) + '"' + ','
+            query = '''INSERT INTO sensormeta (id, deviceid, projectkey, sensor_id)
+                        VALUES({}, \'{}\', \'{}\', {});'''.format(ids, device[0], device[1], sensor_id)
+            self.cursor.execute(query)
+            ids += 1
+        print("Sensor Metadata has been stored into database!")
+
+
     def bulidDeviceMetaQuery(self, device, count):
         output = " VALUES(" + str(count) + "," + device["id"] + ","
         for index, i in enumerate(list(device.keys())):
@@ -101,4 +121,17 @@ class Dbcontext():
                 continue
             output += "'" + str(device[i]) + "',"
         return output
-        
+    
+    def launchPatch(self):
+        queries = ['''DELETE FROM devicemeta WHERE projectid 
+                    NOT IN ('528','671','672','673','674',
+                    '675','677','678','680','709',
+                    '756','1024','1025','1027','1029',
+                    '1032','1034','1035','1036','1048',
+                    '1058','1071','1072','1075','1079',
+                    '1084','1085','1102','1120','1145',
+                    '1147','1162','1167','1184','1189',
+                    '1192','1207','1156','565','624','891');''']
+        for index, i in enumerate(queries):
+            print("Patch {} has been applied to database!".format(index))
+            self.cursor.execute(i)

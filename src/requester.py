@@ -58,4 +58,19 @@ class Requester():
                 print("Project[{}] devices data downloaded!".format(i))
         return output
 
-        
+
+    def getSensorsOfDevice(self, MyStorage):
+        '''
+            Request for sensor meta of all device
+        '''
+        output = {}
+        for device in MyStorage.storage["DeviceMeta"]:
+            #device["ProjectID"]
+            headers = {'CK': device["ProjectKey"]}
+            response = requests.request("GET", 
+                                        self.UB.getSensorOfDev.format(device["id"]), 
+                                        headers=headers)
+            data = [json.loads(response.text), device["ProjectKey"]]
+            output[str(device["id"])] = data
+            print("{} downloaded!!".format(device["id"]))
+        return output

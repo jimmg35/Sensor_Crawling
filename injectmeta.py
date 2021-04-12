@@ -38,7 +38,15 @@ if __name__ == "__main__":
     deviceMeta_processed = Parser.parseDevicesMeta(deviceMeta)
     myStorage.insert(deviceMeta_processed, "DeviceMeta")
 
+    # get sensors of every device.
+    sensorMeta = myReq.getSensorsOfDevice(myStorage)
+    sensorMeta_processed = Parser.parseSensorMeta(sensorMeta)
+    myStorage.insert(sensorMeta_processed, "SensorMeta")
+    
+
 
     # Import data into database.
-    myStorage.import2Database("ProjectData")
-    myStorage.import2Database("DeviceMeta")
+    # myStorage.import2Database("ProjectData")
+    # myStorage.import2Database("DeviceMeta")
+    # myDBcontext.launchPatch()
+    myStorage.import2Database("SensorMeta")

@@ -8,6 +8,7 @@ class UrlBundler():
     base_url = r"https://iot.epa.gov.tw"
     getProjects: str = base_url + r"/iot/v1/project"
     getDevicesOfProj: str = base_url + r"/iot/v1/device"
+    getSensorOfDev: str = base_url + r"/iot/v1/device/{}/sensor"
 
 
 class Key():
