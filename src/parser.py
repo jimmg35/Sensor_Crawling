@@ -4,6 +4,7 @@
 import requests
 import json
 from typing import List, Dict
+import pandas as pd 
 from .parser_engine import ParserTool
 
 class Parser():
@@ -75,9 +76,17 @@ class Parser():
             temp.append(sensor_item)
             output.append(temp)
         return output
-                
+    
+    @staticmethod
+    def transformDeviceSensorMeta(DeviceSensorMeta):
+        """
+            pandas dataframe
+        """
+        total = []
+        for i in DeviceSensorMeta:
+            total.append([str(i[0]), i[1], i[2]])
+        return pd.DataFrame(total, columns=["projectid", "projectkey", "deviceid"])
 
-        
 
 
 

@@ -9,6 +9,8 @@ class UrlBundler():
     getProjects: str = base_url + r"/iot/v1/project"
     getDevicesOfProj: str = base_url + r"/iot/v1/device"
     getSensorOfDev: str = base_url + r"/iot/v1/device/{}/sensor"
+    
+    getIntervalData: str = base_url + r"/iot/v1/device/{}/sensor/{}/rawdata/statistic?start={}&end={}&interval={}&raw=false&option=strict"
 
 
 class Key():

@@ -44,9 +44,8 @@ if __name__ == "__main__":
     myStorage.insert(sensorMeta_processed, "SensorMeta")
     
 
-
     # Import data into database.
-    # myStorage.import2Database("ProjectData")
-    # myStorage.import2Database("DeviceMeta")
-    # myDBcontext.launchPatch()
+    myStorage.import2Database("ProjectData")
+    myStorage.import2Database("DeviceMeta")
+    myDBcontext.launchPatch()
     myStorage.import2Database("SensorMeta")

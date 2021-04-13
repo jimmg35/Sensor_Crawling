@@ -107,7 +107,6 @@ class Dbcontext():
             ids += 1
         print("Sensor Metadata has been stored into database!")
 
-
     def bulidDeviceMetaQuery(self, device, count):
         output = " VALUES(" + str(count) + "," + device["id"] + ","
         for index, i in enumerate(list(device.keys())):
@@ -122,6 +121,13 @@ class Dbcontext():
             output += "'" + str(device[i]) + "',"
         return output
     
+    def queryDeviceSensorMeta_fixed(self):
+        query = '''SELECT projectid, projectkey, deviceid, sensor_id FROM sensormeta INNER JOIN projectmeta ON sensormeta.projectkey = ANY(projectmeta.projectkeys) WHERE projectid IN ('528','671','672','673','674',
+            '675','677','678','680','709','756','1024','1025','1027','1029','1032','1034','1035','1036','1048',
+            '1058','1071','1072','1075','1079','1084','1085','1102','1120','1145','1147','1162','1167','1184','1189','1192','1207');'''
+        self.cursor.execute(query)
+        return self.cursor.fetchall()
+
     def launchPatch(self):
         queries = ['''DELETE FROM devicemeta WHERE projectid 
                     NOT IN ('528','671','672','673','674',

@@ -74,3 +74,22 @@ class Requester():
             output[str(device["id"])] = data
             print("{} downloaded!!".format(device["id"]))
         return output
+
+
+    def getIntervalDataOfSensor(self, DeviceSensorMeta, sensor_item, projectid, interval, start, end):
+        """
+            get interval sensor data for one project
+        """
+        project_data = DeviceSensorMeta[DeviceSensorMeta["projectid"] == projectid]
+        each_sensor_device_data = []
+        for sensorid in sensor_item: # pm2.5, humidity, temperature
+            each_device_data = []
+            for row in project_data.iterrows()[:3]:
+                response = requests.request("GET", 
+                                            self.UB.getIntervalData.format(row[1]["deviceid"], sensorid, 
+                                                     start, end, interval), 
+                                            headers={'CK': row[1]["projectkey"]})
+                each_device_data.append(json.loads(response.text))
+                print("device_id: {}, sensor_id: {}".format(row[1]["deviceid"], sensorid))
+            each_sensor_device_data.append(each_device_data)
+        return each_sensor_device_data
