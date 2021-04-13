@@ -24,6 +24,9 @@ start = "2021-01-01 00:00:00"
 end = "2021-01-31 00:00:00"
 
 
+
+
+
 if __name__ == "__main__":
 
     # initialize basic object.
@@ -44,9 +47,17 @@ if __name__ == "__main__":
     # transform into pandas dataframe
     DeviceSensorMeta = Parser.transformDeviceSensorMeta(rawdata)
     
-    for interval in time_interval[1:2]:
-        for projectid in projects[0:1]:
+
+    Total_dataChunk = {}
+    for interval in time_interval: #[1:2]
+        project_dataChunk = {}
+        for projectid in projects: #[0:1]
             returnData = myReq.getIntervalDataOfSensor(DeviceSensorMeta, 
                                                        sensor_item, projectid, interval, start, end)
+            project_dataChunk[projectid] = returnData
             print("{} has complete.".format(projectid))
-            print(returnData)
+        Total_dataChunk[str(interval)] = project_dataChunk
+
+    Total_dataChunk_processed = Parser.parseTotalDataChunk(Total_dataChunk)
+
+

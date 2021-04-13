@@ -87,6 +87,27 @@ class Parser():
             total.append([str(i[0]), i[1], i[2]])
         return pd.DataFrame(total, columns=["projectid", "projectkey", "deviceid"])
 
+    @staticmethod
+    def parseTotalDataChunk(Total_dataChunk):
+        output = []
+        for interval in list(Total_dataChunk.keys()): # 1 or 60 mins
+            for projectid in list(Total_dataChunk[interval].keys()): # for each project
+                
+                for device in Total_dataChunk[interval][projectid][0]: # pm2.5
+                    
+                    
+                    for t in device["etl"]:
+                        t["start"]
+                        [device["deviceId"], t["avg"], t["max"], t["min"], t["median"]]
+
+
+
+                for device in Total_dataChunk[interval][projectid][1]: # humidity
+
+                for device in Total_dataChunk[interval][projectid][2]: # temperature
+
+
+
 
 
 
