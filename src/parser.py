@@ -89,25 +89,46 @@ class Parser():
 
     @staticmethod
     def parseTotalDataChunk(Total_dataChunk):
-        output = []
+        """
+            {
+                1:{
+                    528:[[rowdata_at_time],[],[]],
+                    527:[],
+                    .
+                    .
+                    .
+                },
+                60:{
+                    528:[],
+                    527:[],
+                    .
+                    .
+                    .
+                }
+            }
+        """
+        output = {}
         for interval in list(Total_dataChunk.keys()): # 1 or 60 mins
+            output_per_proj = {}
             for projectid in list(Total_dataChunk[interval].keys()): # for each project
-
+                total = []
                 pm25 = Total_dataChunk[interval][projectid][0]
                 humidity = Total_dataChunk[interval][projectid][1]
                 temperature = Total_dataChunk[interval][projectid][2]
-                
                 for device_pm, device_hum, device_temp in zip(pm25, humidity, temperature): # for each device
-                    
                     for p, h, t in zip(device_pm["etl"], device_hum["etl"], device_temp["etl"]): # for every time
-                        #t["start"]
                         date = t["start"].split(' ')[0]
                         time = t["start"].split(' ')[1]
                         row_data = [device_pm["deviceId"], p["avg"], p["max"], p["min"], p["median"],
                                                            h["avg"], h["max"], h["min"], h["median"],
                                                            t["avg"], t["max"], t["min"], t["median"], 
-                                                           date, time]
-
+                                                           date.split("-")[0], date.split("-")[1], date.split("-")[2],
+                                                           time.split(":")[0], time.split(":")[1], time.split(":")[2].split(".")[0], 
+                                                           time]
+                        total.append(row_data)
+                output_per_proj[projectid] = total
+            output[str(interval)] = output_per_proj
+        return output
 
 
 

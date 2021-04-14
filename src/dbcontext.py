@@ -27,6 +27,9 @@ class Storer():
             self.dbcontext.ImportDeviceMeta(self.storage[item])
         if item == "SensorMeta" and self.importGate(item):
             self.dbcontext.ImportSensorMeta(self.storage[item])
+        if item == "FixedData" and self.importGate(item):
+            self.dbcontext.ImportSensorMeta(self.storage[item])
+        
     
     def importGate(self, item):
         if self.data_list.index(item) != -1:
@@ -47,6 +50,9 @@ class Dbcontext():
         self.cursor = self.ConnectToDatabase(database)
             
     def ConnectToDatabase(self, database):
+        """
+            Connect to PostgreSQL database.
+        """
         conn = psycopg2.connect(database=database, 
                                 user=self.PGSQL_user_data["user"],
                                 password=self.PGSQL_user_data["password"],
@@ -60,6 +66,9 @@ class Dbcontext():
         return cursor 
 
     def ImportProjectMeta(self, projectMeta):
+        """
+            Import porject metadata into database.
+        """
         for projID in list(projectMeta.keys()):
             keys_arr: str = "'{"
             for index, i in enumerate(projectMeta[projID]["keys"]):
@@ -75,6 +84,9 @@ class Dbcontext():
         print("Project Metadata has been stored into database!")
     
     def ImportDeviceMeta(self, deviceMeta):
+        """
+            Import device meta into database.
+        """
         column_str = "("
         query = "select column_name from information_schema.columns where table_name = 'devicemeta';"
         self.cursor.execute(query)
@@ -91,9 +103,10 @@ class Dbcontext():
         print("Device Metadata has been stored into database!")
 
     def ImportSensorMeta(self, SensorMeta):
+        """
+            Import metadata of sensor of each device into database.
+        """
         ids = 1
-        
-        
         for device in SensorMeta:
             sensor_id = "'{"
             for index, i in enumerate(device[2]):
@@ -108,6 +121,10 @@ class Dbcontext():
         print("Sensor Metadata has been stored into database!")
 
     def bulidDeviceMetaQuery(self, device, count):
+        """
+            Helper function of ImportDeviceMeta(), 
+            for handling exception.
+        """
         output = " VALUES(" + str(count) + "," + device["id"] + ","
         for index, i in enumerate(list(device.keys())):
             if index == (len(list(device.keys())) - 1):
@@ -122,11 +139,29 @@ class Dbcontext():
         return output
     
     def queryDeviceSensorMeta_fixed(self):
+        """
+            query specific metadata from database.
+        """
         query = '''SELECT projectid, projectkey, deviceid, sensor_id FROM sensormeta INNER JOIN projectmeta ON sensormeta.projectkey = ANY(projectmeta.projectkeys) WHERE projectid IN ('528','671','672','673','674',
             '675','677','678','680','709','756','1024','1025','1027','1029','1032','1034','1035','1036','1048',
             '1058','1071','1072','1075','1079','1084','1085','1102','1120','1145','1147','1162','1167','1184','1189','1192','1207');'''
         self.cursor.execute(query)
         return self.cursor.fetchall()
+    
+    def ImportFixedSensorData(self, FixedSensorData):
+        table_dict = {"1": "minute", "60": "hour"}
+        for interval in list(FixedSensorData.keys()):
+            for projectid in list(FixedSensorData[interval].keys()):
+                for row in FixedSensorData[interval][projectid]:
+                    query = '''INSERT INTO {} (id, deviceid, pm2_5_avg, pm2_5_max, pm2_5_min, pm2_5_median,
+                    humidity_avg, humidity_max, humidity_min, humidity_median,
+                    temperature_avg, temperature_max, temperature_min, temperature_median,
+                    year, month, day, hour, minute, second) VALUES()'''
+                    
+            
+
+        
+
 
     def launchPatch(self):
         queries = ['''DELETE FROM devicemeta WHERE projectid 

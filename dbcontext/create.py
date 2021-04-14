@@ -25,8 +25,12 @@ for i in projects:
                                         TEMPERATURE_MAX TEXT,
                                         TEMPERATURE_MIN TEXT,
                                         TEMPERATURE_MEDIAN TEXT,
-                                        DATE TEXT,
-                                        TIMESTAMP TEXT);'''
+                                        YEAR INT,
+                                        MONTH INT,
+                                        DAY INT,
+                                        HOUR INT,
+                                        MINUTE INT,
+                                        SECOND INT);'''
     build_tables["hour_"+i] = '''(ID BIGINT PRIMARY KEY,
                                         DEVICEID TEXT,
                                         PM2_5_AVG TEXT,
@@ -41,8 +45,12 @@ for i in projects:
                                         TEMPERATURE_MAX TEXT,
                                         TEMPERATURE_MIN TEXT,
                                         TEMPERATURE_MEDIAN TEXT,
-                                        DATE TEXT
-                                        TIMESTAMP TEXT);'''
+                                        YEAR INT,
+                                        MONTH INT,
+                                        DAY INT,
+                                        HOUR INT,
+                                        MINUTE INT,
+                                        SECOND INT);'''
 
 
 

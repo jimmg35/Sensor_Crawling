@@ -47,7 +47,7 @@ if __name__ == "__main__":
     # transform into pandas dataframe
     DeviceSensorMeta = Parser.transformDeviceSensorMeta(rawdata)
     
-
+    # requesting for history sensor data.
     Total_dataChunk = {}
     for interval in time_interval: #[1:2]
         project_dataChunk = {}
@@ -58,6 +58,10 @@ if __name__ == "__main__":
             print("{} has complete.".format(projectid))
         Total_dataChunk[str(interval)] = project_dataChunk
 
+    # import data into database
     Total_dataChunk_processed = Parser.parseTotalDataChunk(Total_dataChunk)
+    myStorage.insert(Total_dataChunk_processed, "FixedData")
+    myStorage.import2Database("FixedData")
+
 
 
