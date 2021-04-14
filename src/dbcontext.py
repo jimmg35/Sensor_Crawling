@@ -152,16 +152,30 @@ class Dbcontext():
         table_dict = {"1": "minute", "60": "hour"}
         for interval in list(FixedSensorData.keys()):
             for projectid in list(FixedSensorData[interval].keys()):
+                # get biggest id in that table
+                table_name = table_dict[interval] + "_" + projectid
+                if self.getBiggestId(table_name) == None:
+                    id_for_proj = 1
+                else:
+                    id_for_proj = self.getBiggestId(table_name) + 1
+                # insert data into table
                 for row in FixedSensorData[interval][projectid]:
                     query = '''INSERT INTO {} (id, deviceid, pm2_5_avg, pm2_5_max, pm2_5_min, pm2_5_median,
                     humidity_avg, humidity_max, humidity_min, humidity_median,
                     temperature_avg, temperature_max, temperature_min, temperature_median,
-                    year, month, day, hour, minute, second) VALUES()'''
-                    
+                    year, month, day, hour, minute, second) 
+                    VALUES({},\'{}\',
+                    \'{}\',\'{}\',\'{}\',\'{}\',
+                    \'{}\',\'{}\',\'{}\',\'{}\',
+                    \'{}\',\'{}\',\'{}\',\'{}\',
+                    {},{},{},{},{},{});
+                    '''.format(id_for_proj, )
+
+    def getBiggestId(self, table_name):
+        query = '''SELECT max(id) FROM {};'''.format(table_name)
+        self.cursor.execute(query)
+        return self.cursor.fetchall()[0][0]    
             
-
-        
-
 
     def launchPatch(self):
         queries = ['''DELETE FROM devicemeta WHERE projectid 
