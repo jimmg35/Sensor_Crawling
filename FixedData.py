@@ -1,5 +1,6 @@
 # import essential modules
 import requests
+import sys
 import json
 from typing import List, Dict
 import pandas as pd
@@ -17,14 +18,11 @@ projects = ['528','671','672','673','674','675',
             '1048','1058','1071','1072','1075','1079',
             '1084','1085','1102','1120','1145','1147',
             '1162','1167','1184','1189','1192','1207']
-sensor_item = ['pm2_5', 'humidity', 'temperature']
+sensor_item = ['voc', 'pm2_5', 'humidity', 'temperature']
 time_interval = [1, 60]
 
-start = "2021-01-01 00:00:00" 
-end = "2021-01-31 00:00:00"
-
-
-
+start = str(sys.argv[5]) + "-" + str(sys.argv[6]) + "-" + str(sys.argv[7]) + " 00:00:00" 
+end = str(sys.argv[8]) + "-" + str(sys.argv[9]) + "-" + str(sys.argv[10]) + " 00:00:00"
 
 
 if __name__ == "__main__":
@@ -35,10 +33,10 @@ if __name__ == "__main__":
     myReq = Requester(myBundler, myKey)
 
     # initialize dbcontext
-    myDBcontext = Dbcontext({"user":"postgres",
-                                "password":"jim60308",
-                                "host":"localhost",
-                                "port":"5432"}, "sensordata")
+    myDBcontext = Dbcontext({"user":str(sys.argv[1]), 
+                            "password":str(sys.argv[2]), 
+                            "host":str(sys.argv[3]), 
+                            "port":str(sys.argv[4])}, "sensordata")
     myStorage = Storer(myDBcontext)
 
 
@@ -61,7 +59,7 @@ if __name__ == "__main__":
     # import data into database
     Total_dataChunk_processed = Parser.parseTotalDataChunk(Total_dataChunk)
     myStorage.insert(Total_dataChunk_processed, "FixedData")
-    myStorage.import2Database("FixedData")
+    myStorage.import2Database("FixedData", sys.argv[5], sys.argv[6], sys.argv[9])
 
 
 

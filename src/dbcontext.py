@@ -20,7 +20,7 @@ class Storer():
         self.storage[name] = data
         self.data_list.append(name)
 
-    def import2Database(self, item: str):
+    def import2Database(self, item: str, y=None, sm=None, em=None):
         if item == "ProjectData" and self.importGate(item):
             self.dbcontext.ImportProjectMeta(self.storage[item])
         if item == "DeviceMeta" and self.importGate(item):
@@ -28,7 +28,7 @@ class Storer():
         if item == "SensorMeta" and self.importGate(item):
             self.dbcontext.ImportSensorMeta(self.storage[item])
         if item == "FixedData" and self.importGate(item):
-            self.dbcontext.ImportFixedSensorData(self.storage[item])
+            self.dbcontext.ImportFixedSensorData(self.storage[item], y, sm, em)
         
     
     def importGate(self, item):
@@ -148,14 +148,15 @@ class Dbcontext():
         self.cursor.execute(query)
         return self.cursor.fetchall()
     
-    def ImportFixedSensorData(self, FixedSensorData):
+    def ImportFixedSensorData(self, FixedSensorData, year, start_m, end_m):
 
         print("=================== Import into database ===================")
         table_dict = {"1": "minute", "60": "hour"}
         for interval in list(FixedSensorData.keys()):
             for projectid in list(FixedSensorData[interval].keys()):
                 # get biggest id in that table
-                table_name = table_dict[interval] + "_" + projectid
+                table_name = table_dict[interval] + "_" + projectid + "_" + str(year) + "_" + str(int(start_m)) + "to" + str(int(end_m)+1)
+                print(table_name)
                 if self.getBiggestId(table_name) == None:
                     id_for_proj = 1
                 else:
@@ -163,13 +164,16 @@ class Dbcontext():
                 # insert data into table
                 for a_row in FixedSensorData[interval][projectid]:
                     try:
-                        query = '''INSERT INTO {} (id, deviceid, pm2_5_avg, pm2_5_max, pm2_5_min, pm2_5_median,
+                        query = '''INSERT INTO {} (id, deviceid, 
+                        voc_avg, voc_max, voc_min, voc_median, 
+                        pm2_5_avg, pm2_5_max, pm2_5_min, pm2_5_median,
                         humidity_avg, humidity_max, humidity_min, humidity_median,
                         temperature_avg, temperature_max, temperature_min, temperature_median,
                         year, month, day, hour, minute, second, time) 
-                        VALUES({},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},\'{}\');
+                        VALUES({},\'{}\',{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},\'{}\');
                         '''.format(table_name, id_for_proj, a_row[0], a_row[1], a_row[2], a_row[3], a_row[4],a_row[5], a_row[6], a_row[7], a_row[8],
-                                    a_row[9], a_row[10], a_row[11], a_row[12],a_row[13], a_row[14], a_row[15], a_row[16], a_row[17], a_row[18], a_row[19])
+                                    a_row[9], a_row[10], a_row[11], a_row[12],a_row[13], a_row[14], a_row[15], a_row[16], a_row[17], a_row[18], a_row[19],
+                                    a_row[20],a_row[21], a_row[22], a_row[23])
                         self.cursor.execute(query)
                         id_for_proj += 1
                     except:

@@ -112,14 +112,16 @@ class Parser():
             output_per_proj = {}
             for projectid in list(Total_dataChunk[interval].keys()): # for each project
                 total = []
-                pm25 = Total_dataChunk[interval][projectid][0]
-                humidity = Total_dataChunk[interval][projectid][1]
-                temperature = Total_dataChunk[interval][projectid][2]
-                for device_pm, device_hum, device_temp in zip(pm25, humidity, temperature): # for each device
-                    for p, h, t in zip(device_pm["etl"], device_hum["etl"], device_temp["etl"]): # for every time
+                voc = Total_dataChunk[interval][projectid][0]
+                pm25 = Total_dataChunk[interval][projectid][1]
+                humidity = Total_dataChunk[interval][projectid][2]
+                temperature = Total_dataChunk[interval][projectid][3]
+                for device_voc, device_pm, device_hum, device_temp in zip(voc, pm25, humidity, temperature): # for each device
+                    for v, p, h, t in zip(device_voc["etl"], device_pm["etl"], device_hum["etl"], device_temp["etl"]): # for every time
                         date = t["start"].split(' ')[0]
                         time = t["start"].split(' ')[1]
-                        row_data = [device_pm["deviceId"], p["avg"], p["max"], p["min"], p["median"],
+                        row_data = [device_pm["deviceId"], v["avg"], v["max"], v["min"], v["median"], 
+                                                           p["avg"], p["max"], p["min"], p["median"],
                                                            h["avg"], h["max"], h["min"], h["median"],
                                                            t["avg"], t["max"], t["min"], t["median"], 
                                                            date.split("-")[0], date.split("-")[1], date.split("-")[2],

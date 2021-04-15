@@ -84,7 +84,7 @@ class Requester():
         """
         project_data = DeviceSensorMeta[DeviceSensorMeta["projectid"] == projectid]
         each_sensor_device_data = []
-        for sensorid in sensor_item: # pm2.5, humidity, temperature
+        for sensorid in sensor_item: # voc, pm2.5, humidity, temperature
             each_device_data = []
             count = 0  # control how many devices per project
             for row in project_data.iterrows():
