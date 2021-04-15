@@ -51,11 +51,11 @@ if __name__ == "__main__":
     Total_dataChunk = {}
     for interval in time_interval: #[1:2]
         project_dataChunk = {}
-        for projectid in projects: #[0:1]
+        for projectid in projects[0:2]: # control how many project to be requested
             returnData = myReq.getIntervalDataOfSensor(DeviceSensorMeta, 
                                                        sensor_item, projectid, interval, start, end)
             project_dataChunk[projectid] = returnData
-            print("{} has complete.".format(projectid))
+            print("{} has complete. interval: {}\n".format(projectid, interval))
         Total_dataChunk[str(interval)] = project_dataChunk
 
     # import data into database

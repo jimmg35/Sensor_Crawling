@@ -123,8 +123,8 @@ class Parser():
                                                            h["avg"], h["max"], h["min"], h["median"],
                                                            t["avg"], t["max"], t["min"], t["median"], 
                                                            date.split("-")[0], date.split("-")[1], date.split("-")[2],
-                                                           time.split(":")[0], time.split(":")[1], time.split(":")[2].split(".")[0], 
-                                                           time]
+                                                           time.split(":")[0], time.split(":")[1], time.split(":")[2].split(".")[0],
+                                                           t["start"]]
                         total.append(row_data)
                 output_per_proj[projectid] = total
             output[str(interval)] = output_per_proj

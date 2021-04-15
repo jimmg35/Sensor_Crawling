@@ -28,7 +28,7 @@ class Storer():
         if item == "SensorMeta" and self.importGate(item):
             self.dbcontext.ImportSensorMeta(self.storage[item])
         if item == "FixedData" and self.importGate(item):
-            self.dbcontext.ImportSensorMeta(self.storage[item])
+            self.dbcontext.ImportFixedSensorData(self.storage[item])
         
     
     def importGate(self, item):
@@ -149,6 +149,8 @@ class Dbcontext():
         return self.cursor.fetchall()
     
     def ImportFixedSensorData(self, FixedSensorData):
+
+        print("=================== Import into database ===================")
         table_dict = {"1": "minute", "60": "hour"}
         for interval in list(FixedSensorData.keys()):
             for projectid in list(FixedSensorData[interval].keys()):
@@ -159,17 +161,21 @@ class Dbcontext():
                 else:
                     id_for_proj = self.getBiggestId(table_name) + 1
                 # insert data into table
-                for row in FixedSensorData[interval][projectid]:
-                    query = '''INSERT INTO {} (id, deviceid, pm2_5_avg, pm2_5_max, pm2_5_min, pm2_5_median,
-                    humidity_avg, humidity_max, humidity_min, humidity_median,
-                    temperature_avg, temperature_max, temperature_min, temperature_median,
-                    year, month, day, hour, minute, second) 
-                    VALUES({},\'{}\',
-                    \'{}\',\'{}\',\'{}\',\'{}\',
-                    \'{}\',\'{}\',\'{}\',\'{}\',
-                    \'{}\',\'{}\',\'{}\',\'{}\',
-                    {},{},{},{},{},{});
-                    '''.format(id_for_proj, )
+                for a_row in FixedSensorData[interval][projectid]:
+                    try:
+                        query = '''INSERT INTO {} (id, deviceid, pm2_5_avg, pm2_5_max, pm2_5_min, pm2_5_median,
+                        humidity_avg, humidity_max, humidity_min, humidity_median,
+                        temperature_avg, temperature_max, temperature_min, temperature_median,
+                        year, month, day, hour, minute, second, time) 
+                        VALUES({},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},\'{}\');
+                        '''.format(table_name, id_for_proj, a_row[0], a_row[1], a_row[2], a_row[3], a_row[4],a_row[5], a_row[6], a_row[7], a_row[8],
+                                    a_row[9], a_row[10], a_row[11], a_row[12],a_row[13], a_row[14], a_row[15], a_row[16], a_row[17], a_row[18], a_row[19])
+                        self.cursor.execute(query)
+                        id_for_proj += 1
+                    except:
+                        print("insert exception at  ->   interval:{} projectid:{} ".format(interval, projectid))
+                print("insert complete  ->  {}".format(table_name))
+
 
     def getBiggestId(self, table_name):
         query = '''SELECT max(id) FROM {};'''.format(table_name)

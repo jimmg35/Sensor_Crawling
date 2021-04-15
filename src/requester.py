@@ -86,18 +86,19 @@ class Requester():
         each_sensor_device_data = []
         for sensorid in sensor_item: # pm2.5, humidity, temperature
             each_device_data = []
-            count = 0
+            count = 0  # control how many devices per project
             for row in project_data.iterrows():
                 response = requests.request("GET", 
                                             self.UB.getIntervalData.format(row[1]["deviceid"], sensorid, 
                                                      start, end, interval), 
                                             headers={'CK': row[1]["projectkey"]})
                 each_device_data.append(json.loads(response.text))
-                print("project_id:{} device_id: {}, sensor_id: {}".format(projectid, 
-                                                                    row[1]["deviceid"], 
-                                                                    sensorid))
-                # count += 1
-                # if count == 5:
-                #     break
+                print("intervar: {} project_id:{} device_id: {}, sensor_id: {}".format(str(interval),
+                                                                                       projectid, 
+                                                                                       row[1]["deviceid"], 
+                                                                                       sensorid))
+                count += 1
+                if count == 2:
+                    break
             each_sensor_device_data.append(each_device_data)
         return each_sensor_device_data
