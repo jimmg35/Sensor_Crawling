@@ -102,3 +102,4 @@ class Requester():
                     break
             each_sensor_device_data.append(each_device_data)
         return each_sensor_device_data
+
