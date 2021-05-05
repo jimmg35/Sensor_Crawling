@@ -1,6 +1,7 @@
 
 # Author : @jimmg35
 # Desc : black box class.
+from typing import List
 
 
 class ParserTool():
@@ -86,3 +87,23 @@ class ParserTool():
         for i, j in zip(list(sub.keys()), list(re.keys())):
             output[j] = sub[i]
         return output
+
+    @staticmethod
+    def getShape(matrix):
+        # return row, col of a matrix
+        return [len(matrix), len(matrix[0])]
+
+    @staticmethod
+    def Transpose(A):
+        # transpose a matrix
+        shape_A = ParserTool.getShape(A)
+        if shape_A[0] != 1:
+            result = []
+            for i in range(0, shape_A[1]):
+                v  = []
+                for j in range(0, shape_A[0]):
+                    v.append(A[j][i])
+                result.append(v)
+            return result
+        else: #if A is row matrix
+            return [[A[i]] for i in range(0, len(A))]

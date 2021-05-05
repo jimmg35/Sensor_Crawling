@@ -19,7 +19,7 @@ projects = ['528','671','672','673','674','675',
             '1084','1085','1102','1120','1145','1147',
             '1162','1167','1184','1189','1192','1207']
 sensor_item = ['voc', 'pm2_5', 'humidity', 'temperature']
-time_interval = [1, 60]
+time_interval = [60]
 
 start = str(sys.argv[5]) + "-" + str(sys.argv[6]) + "-" + str(sys.argv[7]) + " 00:00:00" 
 end = str(sys.argv[8]) + "-" + str(sys.argv[9]) + "-" + str(sys.argv[10]) + " 00:00:00"
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     myStorage = Storer(myDBcontext)
 
 
-    # query from database
+    # query metadata from database
     rawdata = myDBcontext.queryDeviceSensorMeta_fixed()
     # transform into pandas dataframe
     DeviceSensorMeta = Parser.transformDeviceSensorMeta(rawdata)
@@ -49,7 +49,7 @@ if __name__ == "__main__":
     Total_dataChunk = {}
     for interval in time_interval: #[1:2]
         project_dataChunk = {}
-        for projectid in projects[0:2]: # control how many project to be requested
+        for projectid in projects: # control how many project to be requested
             returnData = myReq.getIntervalDataOfSensor(DeviceSensorMeta, 
                                                        sensor_item, projectid, interval, start, end)
             project_dataChunk[projectid] = returnData

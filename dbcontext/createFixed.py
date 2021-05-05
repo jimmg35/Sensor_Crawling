@@ -11,7 +11,7 @@ projects = ['528','671','672','673','674','675',
             '1084','1085','1102','1120','1145','1147',
             '1162','1167','1184','1189','1192','1207']
 for i in projects:
-    build_tables["minute_" + i + "_" + str(sys.argv[5]) + "_" + str(int(sys.argv[6])) + "to" + str(int(sys.argv[7])+1)] = '''(ID BIGINT PRIMARY KEY,
+    build_tables["minute_" + i + "_" + str(sys.argv[5]) + "_" + str(int(sys.argv[6])) + "to" + str(int(sys.argv[7]))] = '''(ID BIGINT PRIMARY KEY,
                                         DEVICEID TEXT,
                                         VOC_AVG DOUBLE PRECISION,
                                         VOC_MAX DOUBLE PRECISION,
@@ -36,7 +36,7 @@ for i in projects:
                                         MINUTE INT,
                                         SECOND INT,
                                         TIME TIMESTAMP);'''
-    build_tables["hour_" + i + "_" + str(sys.argv[5]) + "_" + str(int(sys.argv[6])) + "to" + str(int(sys.argv[7])+1)] = '''(ID BIGINT PRIMARY KEY,
+    build_tables["hour_" + i + "_" + str(sys.argv[5]) + "_" + str(int(sys.argv[6])) + "to" + str(int(sys.argv[7]))] = '''(ID BIGINT PRIMARY KEY,
                                         DEVICEID TEXT,
                                         VOC_AVG DOUBLE PRECISION,
                                         VOC_MAX DOUBLE PRECISION,

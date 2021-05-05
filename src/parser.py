@@ -132,6 +132,93 @@ class Parser():
             output[str(interval)] = output_per_proj
         return output
 
+    @staticmethod
+    def parseTotalDataChunk_spacial(Total_dataChunk):
+        """
+            {
+                528:[[rowdata_at_time],[],[]],
+                527:[],
+                .
+                .
+                .
+            }
+        """
+        output = {}
+        for projectid in list(Total_dataChunk.keys()):
+            data_T = ParserTool.Transpose(Total_dataChunk[projectid])
+            
+            total = []
+            for device_row in data_T: # for each device
+                
+
+                dataChunk = []
+                for index, device in enumerate(device_row): # for each sensor of a device
+                    dataChunk.append(device["etl"])
+                dataChunk_T = ParserTool.Transpose(dataChunk)
+
+                
+                for row in dataChunk_T: # for same time and different sensor
+                    temp = [device_row[0]["deviceId"]]
+                    for index, sensor_at_time in enumerate(row):
+                        temp += [sensor_at_time["avg"],
+                                 sensor_at_time["max"],
+                                 sensor_at_time["min"],
+                                 sensor_at_time["median"]]
+                        if index == (len(row)-1):
+                            date = sensor_at_time["start"].split(' ')[0]
+                            time = sensor_at_time["start"].split(' ')[1]
+                            temp += [date.split("-")[0], date.split("-")[1], date.split("-")[2],
+                                     time.split(":")[0], time.split(":")[1], time.split(":")[2].split(".")[0],
+                                     t["start"]]
+                    total.append(temp)
+            output[projectid] = total
+        return output
+
+    @staticmethod
+    def parseMinuteData(data_chunk, ts):
+        
+        """ 解析時間區段內 一個device各測項的資料 """
+
+        # data = {"voc":[], "pm2_5":[], "humidity":[], "temperature":[]}
+        # date = []
+        # time = []
+        # deviceid = []
+        # for i in range(0, len(data_chunk)):
+        #     data[data_chunk[i]["id"]].append(data_chunk[i]["value"][0])
+        #     if i%4 == 0 and i != (len(data_chunk)-1):
+        #         date.append(data_chunk[i]["createTime"].split(' ')[0]) 
+        #         time.append(data_chunk[i]["createTime"].split(' ')[1].split(':'))
+        #         deviceid.append(data_chunk[i]["deviceId"])
+        # return deviceid, data, date, time
+        
+        data_s = []
+        date = []
+        time = []
+        deviceid = []
+        for i in range(0, len(data_chunk), 4):
+            classify = {"voc":None, "pm2_5":None, "humidity":None, "temperature":None}
+            for j in range(0, 4):
+                classify[data_chunk[i+j]["id"]] = data_chunk[i+j]["value"][0]
+            
+            data_s.append(classify)
+            date.append(data_chunk[i]["createTime"].split(' ')[0]) 
+            time.append(data_chunk[i]["createTime"].split(' ')[1].split(':'))
+            deviceid.append(data_chunk[i]["deviceId"])
+        
+        return data_s, date, time, deviceid
+                        
+
+
+                
+                
+
+            
+                    
+            
+            
+
+                
+            
 
 
 

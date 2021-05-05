@@ -12,6 +12,7 @@ class UrlBundler():
     
     getIntervalData: str = base_url + r"/iot/v1/device/{}/sensor/{}/rawdata/statistic?start={}&end={}&interval={}&raw=false&option=strict"
 
+    getMinuteData: str = base_url + r"/iot/v1/device/{}/sensor/pm2_5,voc,temperature,humidity/rawdata?start={}&end={}"
 
 class Key():
     """

@@ -79,27 +79,76 @@ class Requester():
     def getIntervalDataOfSensor(self, DeviceSensorMeta, sensor_item, projectid, interval, start, end):
         """
             get interval sensor data for one project
-              pm                         hum  temp
-             [[{device1},{device2},...], [],  []]
+             [[{device1},{device2},...],   pm                           
+              [{device1},{device2},...],   hum
+              [{device1},{device2},...]]   temp
         """
         project_data = DeviceSensorMeta[DeviceSensorMeta["projectid"] == projectid]
         each_sensor_device_data = []
-        for sensorid in sensor_item: # voc, pm2.5, humidity, temperature
-            each_device_data = []
-            count = 0  # control how many devices per project
-            for row in project_data.iterrows():
-                response = requests.request("GET", 
-                                            self.UB.getIntervalData.format(row[1]["deviceid"], sensorid, 
-                                                     start, end, interval), 
-                                            headers={'CK': row[1]["projectkey"]})
-                each_device_data.append(json.loads(response.text))
-                print("intervar: {} project_id:{} device_id: {}, sensor_id: {}".format(str(interval),
-                                                                                       projectid, 
-                                                                                       row[1]["deviceid"], 
-                                                                                       sensorid))
-                count += 1
-                if count == 2:
-                    break
-            each_sensor_device_data.append(each_device_data)
+        with open('log.txt', 'a') as f:
+            for sensorid in sensor_item: # voc, pm2.5, humidity, temperature
+                each_device_data = []
+                #count = 0  # control how many devices per project
+                for row in project_data.iterrows():
+                    try:
+                        response = requests.request("GET", 
+                                                    self.UB.getIntervalData.format(row[1]["deviceid"], sensorid, 
+                                                            start, end, interval), 
+                                                    headers={'CK': row[1]["projectkey"]})
+                        each_device_data.append(json.loads(response.text))
+                        print("interval: {} project_id:{} device_id: {}, sensor_id: {}".format(str(interval),
+                                                                                            projectid, 
+                                                                                            row[1]["deviceid"], 
+                                                                                            sensorid))
+                    except:
+                        f.write("{}, {}, {}\n".format(projectid, row[1]["deviceid"], sensorid))
+                    # count += 1
+                    # if count == 2:
+                    #     break
+                each_sensor_device_data.append(each_device_data)
         return each_sensor_device_data
 
+    def getMinuteDataOfProject_interval_device(self, deviceid, CK, start, end, compare_stamp, ts):
+        
+        """
+            撈取一個專案的一個裝置的資料(時間區間內)
+        """
+        
+        with open('log.txt', 'a') as f:
+            try:
+                response = requests.request(
+                                        "GET", 
+                                        self.UB.getMinuteData.format(deviceid, start, end), 
+                                        headers={'CK': CK}
+                                    )
+                data = json.loads(response.text)
+                last_time = json.loads(response.text)[-1]["createTime"]
+                last_time_compare = ts.parse_minute(last_time)
+                print("{} successed at {}".format(deviceid, last_time))
+
+                while compare_stamp != last_time_compare:
+                    try:
+                        response = requests.request(
+                                            "GET", 
+                                            self.UB.getMinuteData.format(deviceid, last_time, end), 
+                                            headers={'CK': CK}
+                                        )
+                        last_time = json.loads(response.text)[-1]["createTime"]
+                        last_time_ = ts.parse_minute(last_time)
+                        last_time_compare = ts.build_minute(last_time_)
+                        data += json.loads(response.text)
+                        print("{} successed at {}".format(deviceid, last_time))
+                    except:
+                        f.write("{}, {}\n".format(deviceid, last_time))
+                        print("{} failed at {}".format(deviceid, last_time))
+                        break
+
+            except:
+                f.write("{}, {}\n".format(deviceid, last_time))
+                print("{} failed at {}".format(deviceid, start))
+                return None
+
+            return data
+        
+
+        

@@ -185,7 +185,39 @@ class Dbcontext():
         query = '''SELECT max(id) FROM {};'''.format(table_name)
         self.cursor.execute(query)
         return self.cursor.fetchall()[0][0]    
-            
+    
+    def queryDeviceSensorMeta_spacial(self):
+        query = '''SELECT projectid, projectkey, deviceid FROM devicemeta WHERE projectid IN ('1156', '565', '624', '891');'''
+        self.cursor.execute(query)
+        return self.cursor.fetchall()
+
+    def queryMinuteMetadata(self, project):
+        query = '''SELECT deviceid, projectkey FROM sensormeta INNER JOIN 
+        projectmeta ON sensormeta.projectkey = 
+        ANY(projectmeta.projectkeys) WHERE projectid = '{}';'''.format(project)
+        self.cursor.execute(query)
+        data = self.cursor.fetchall()
+        return [[i[0], i[1]]for i in data]
+        
+    def ImportMinuteData(self, deviceid, data, date, time, project, start_month):
+        """ 將時間區段內的一台感測器資料輸入至資料庫 """
+
+        table_name = "minute_{}_{}to{}".format(project, start_month, start_month+1)
+
+        if self.getBiggestId(table_name) == None:
+            ids = 1
+        else:
+            ids = self.getBiggestId(table_name) + 1
+
+    
+        for i in range(0, len(deviceid)):
+            query = '''INSERT INTO {} (id, deviceid, voc, pm2_5, humidity, temperature, date, hour, minute, second) 
+                        VALUES({}, \'{}\', \'{}\', \'{}\', \'{}\', \'{}\', \'{}\', \'{}\', \'{}\', \'{}\');
+                        '''.format(table_name, ids, deviceid[i], data[i]["voc"], data[i]["pm2_5"],
+                                    data[i]["humidity"], data[i]["temperature"],
+                                    date[i], time[i][0], time[i][1], time[i][2])
+            self.cursor.execute(query)
+            ids += 1
 
     def launchPatch(self):
         queries = ['''DELETE FROM devicemeta WHERE projectid 
